@@ -35,7 +35,7 @@ func Connect() {
 
 	dbname := os.Getenv("DB_NAME")
 	if dbname == "" {
-		dbname = "prediction_social"
+		dbname = "reThink"
 	}
 
 	port := os.Getenv("DB_PORT")
