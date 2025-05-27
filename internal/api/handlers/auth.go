@@ -53,11 +53,10 @@ func Register(c *gin.Context) {
 
 	// Create new user
 	user := models.User{
-		Username:     input.Username,
-		Email:        input.Email,
-		PasswordHash: string(hashedPassword),
-		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Now(),
+		Name:      input.Username,
+		Email:     input.Email,
+		Password:  string(hashedPassword),
+		CreatedAt: time.Now(),
 	}
 
 	if result := database.DB.Create(&user); result.Error != nil {
@@ -66,7 +65,7 @@ func Register(c *gin.Context) {
 	}
 
 	// Generate JWT token
-	token, err := generateToken(user.ID)
+	token, err := generateToken(uint(user.ID))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
 		return
@@ -76,7 +75,7 @@ func Register(c *gin.Context) {
 		"message": "User registered successfully",
 		"user": gin.H{
 			"id":       user.ID,
-			"username": user.Username,
+			"username": user.Name,
 			"email":    user.Email,
 		},
 		"token": token,
@@ -99,7 +98,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Compare passwords
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
@@ -115,7 +114,7 @@ func Login(c *gin.Context) {
 		"message": "Login successful",
 		"user": gin.H{
 			"id":       user.ID,
-			"username": user.Username,
+			"username": user.Name,
 			"email":    user.Email,
 		},
 		"token": token,
