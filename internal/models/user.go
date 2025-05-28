@@ -9,7 +9,7 @@ import (
 
 // User represents a user in the system
 type User struct {
-	ID        int       `json:"id" db:"id"`
+	ID        uint      `json:"id" db:"id"`
 	Name      string    `json:"name" db:"name"`
 	Email     string    `json:"email" db:"email"`
 	Password  string    `json:"-" db:"password"` // never expose in JSON
@@ -63,7 +63,7 @@ func (u *User) Validate() error {
 
 // UserProfile represents public user information
 type UserProfile struct {
-	ID        int       `json:"id"`
+	ID        uint      `json:"id"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
 	CreatedAt time.Time `json:"created_at"`

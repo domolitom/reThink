@@ -65,7 +65,7 @@ func Register(c *gin.Context) {
 	}
 
 	// Generate JWT token
-	token, err := generateToken(uint(user.ID))
+	token, err := generateToken(user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
 		return
