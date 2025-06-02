@@ -230,7 +230,7 @@ func ResolveMarket(c *gin.Context) {
 		// Calculate score adjustment based on prediction accuracy
 		// This is a basic scoring algorithm; you might want more sophisticated ones
 		var scoreAdjustment float64
-		if prediction.Prediction == outcome {
+		if *prediction.UserVote == outcome {
 			// Correct prediction: higher confidence = higher score
 			scoreAdjustment = prediction.Confidence / 50.0 // Normalized to 0-2
 		} else {
