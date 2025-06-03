@@ -108,13 +108,14 @@ func CreatePrediction(c *gin.Context) {
 
 	// Create new prediction
 	marketIDUint, _ := strconv.ParseUint(marketID, 10, 32)
+	// Adjust field names and types to match models.Prediction struct definition
 	prediction := models.Prediction{
-		UserID:     userID.(uint),
+		UserID:     uint(userID.(int)), // or userID.(uint) if userID is already uint
 		MarketID:   uint(marketIDUint),
-		Prediction: input.Prediction,
-		Confidence: input.Confidence,
+		IsTrue:     input.Prediction, // Replace with the correct boolean field name
+		Confidence: input.Confidence, // Replace with the correct confidence field name
 		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+		ModifiedAt: time.Now(), // Replace with the correct updated/modified field name
 	}
 
 	if result := database.DB.Create(&prediction); result.Error != nil {
